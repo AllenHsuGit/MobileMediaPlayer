@@ -22,7 +22,7 @@
             android:clickable="true"
             android:drawableLeft="@drawable/tv_search_drawable_selector"
             android:drawablePadding="3dp"
-            android:hint="鍏ㄧ綉鎼滅储"
+            android:hint="全网搜索"
             android:textColor="@drawable/tv_search_textcolor_selector"
             android:textSize="14sp" />
 
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="8dp"
-            android:text="鎼滅储" />
+            android:text="搜索" />
 
 
     </LinearLayout>
@@ -63,7 +63,7 @@
         <TextView
             android:visibility="gone"
             android:id="@+id/tv_nodata"
-            android:text="鎶辨瓑娌℃湁鎮ㄨ鐨勫唴瀹?.."
+            android:text="抱歉没有您要的内容..."
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
