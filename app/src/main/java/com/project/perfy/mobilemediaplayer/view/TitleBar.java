@@ -1,6 +1,7 @@
 package com.project.perfy.mobilemediaplayer.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.project.perfy.mobilemediaplayer.R;
+import com.project.perfy.mobilemediaplayer.controller.activity.SearchActivity;
 
 
 /**
@@ -69,7 +71,9 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_search: // 搜索
-                Toast.makeText(mContext, "搜索", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "搜索", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext,SearchActivity.class);
+                mContext.startActivity(intent);
                 break;
             case R.id.rl_game: // 游戏
                 Toast.makeText(mContext, "游戏", Toast.LENGTH_SHORT).show();

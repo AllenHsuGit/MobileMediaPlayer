@@ -246,6 +246,7 @@
                 <action android:name="com.porfirio.mobileplayer_OPENAUDIO"/>
             </intent-filter>
         </service>
+        <activity android:name=".controller.activity.SearchActivity"/>
     </application>
 
 </manifest>
