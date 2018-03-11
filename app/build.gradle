@@ -32,4 +32,6 @@ dependencies {
     implementation project(':EventBus')
     implementation project(':vitamio')
     implementation project(':xutils')
+    implementation files('libs/Msc.jar')
+    implementation files('libs/Sunflower.jar')
 }

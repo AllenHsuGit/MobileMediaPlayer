@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -889,16 +890,35 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             case MotionEvent.ACTION_MOVE: // 手指移动
                 // 2.记录移动距离
                 float endY = event.getY();
+                float endX = event.getX();
                 float distanceY = startY - endY;
-                // 改变的声音 = （滑动屏幕的距离：总距离）*音量最大值
-                float delta = (distanceY / touchRange) * maxVolume;
-                // 最终的声音 = 原来的声音 + 改变的声音
-                int volume = (int) Math.min(Math.max(touchCurrentVolume + delta, 0), maxVolume);
-                if (delta != 0) {
-                    isMute = false;
-                    upDataVolume(volume, isMute);
+                if(endX < screenWidth/2 ){
+                    //左边屏幕-调节亮度
+                    final double FLING_MIN_DISTANCE = 0.5;
+                    final double FLING_MIN_VELOCITY = 0.5;
+                    if (distanceY > FLING_MIN_DISTANCE
+                            && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+//                        Log.e(TAG, "up");
+                        setBrightness(20);
+                    }
+                    if (distanceY < FLING_MIN_DISTANCE
+                            && Math.abs(distanceY) > FLING_MIN_VELOCITY) {
+//                        Log.e(TAG, "down");
+                        setBrightness(-20);
+                    }
+                }else{
+                    //右边屏幕-调节声音
+                    // 改变的声音 = （滑动屏幕的距离：总距离）*音量最大值
+                    float delta = (distanceY / touchRange) * maxVolume;
+                    // 最终的声音 = 原来的声音 + 改变的声音
+                    int volume = (int) Math.min(Math.max(touchCurrentVolume + delta, 0), maxVolume);
+                    if (delta != 0) {
+                        isMute = false;
+                        upDataVolume(volume, isMute);
+                    }
+                    //startY = event.getY(); // 不能加这行代码，加了之后变化会变小，调节音量就变得不敏感了。
                 }
-                //startY = event.getY(); // 不能加这行代码，加了之后变化会变小，调节音量就变得不敏感了。
+
                 break;
             case MotionEvent.ACTION_UP: // 手指离开
                 mySendEmptyMessageDelayed();
@@ -907,7 +927,31 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         }
         return super.onTouchEvent(event);
     }
-
+    private Vibrator vibrator;
+    /*
+     *
+     * 设置屏幕亮度 lp = 0 全暗 ，lp= -1,根据系统设置， lp = 1; 最亮
+     */
+    public void setBrightness(float brightness) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        // if (lp.screenBrightness <= 0.1) {
+        // return;
+        // }
+        lp.screenBrightness = lp.screenBrightness + brightness / 255.0f;
+        if (lp.screenBrightness > 1) {
+            lp.screenBrightness = 1;
+            vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+            long[] pattern = { 10, 200 }; // OFF/ON/OFF/ON...
+            vibrator.vibrate(pattern, -1);
+        } else if (lp.screenBrightness < 0.2) {
+            lp.screenBrightness = (float) 0.2;
+            vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+            long[] pattern = { 10, 200 }; // OFF/ON/OFF/ON...
+            vibrator.vibrate(pattern, -1);
+        }
+//        Log.e(TAG, "lp.screenBrightness= " + lp.screenBrightness);
+        getWindow().setAttributes(lp);
+    }
 
     /**
      * 显示控制面板
