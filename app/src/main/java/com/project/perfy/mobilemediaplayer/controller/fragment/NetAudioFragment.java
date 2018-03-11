@@ -23,6 +23,12 @@ import org.xutils.x;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+import fm.jiecao.jcvideoplayer_lib.JCMediaManager;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+import fm.jiecao.jcvideoplayer_lib.VideoEvents;
+import io.vov.vitamio.widget.MediaController;
+
 /**
  * Created by Administrator on 2017/3/30.
  */
@@ -120,4 +126,14 @@ public class NetAudioFragment extends BaseFragment {
     private NetAudioPagerBean parseJson(String json) {
         return new Gson().fromJson(json,NetAudioPagerBean.class);
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            LogUtil.e("NetAudioFragment-onHiddenChanged==" + hidden);
+            JCMediaManager.intance().mediaPlayer.pause();
+        }
+        super.onHiddenChanged(hidden);
+    }
+
 }

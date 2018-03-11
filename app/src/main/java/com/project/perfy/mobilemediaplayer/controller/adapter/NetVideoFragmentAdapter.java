@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.project.perfy.mobilemediaplayer.R;
+import com.project.perfy.mobilemediaplayer.controller.fragment.NetAudioFragment;
 import com.project.perfy.mobilemediaplayer.domain.MediaItem;
 
 import java.util.List;

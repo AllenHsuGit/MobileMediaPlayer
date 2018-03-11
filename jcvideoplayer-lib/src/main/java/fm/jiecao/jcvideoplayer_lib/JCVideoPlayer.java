@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -88,6 +89,10 @@ public class JCVideoPlayer extends FrameLayout implements View.OnClickListener, 
     private boolean touchingProgressBar = false;
     static boolean isFromFullScreenBackHere = false;//如果是true表示这个正在不是全屏，并且全屏刚推出，总之进入过全屏
     static boolean isClickFullscreen = false;
+
+    public JCVideoPlayer(@NonNull Context context) {
+        super(context);
+    }
 
     public JCVideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -266,6 +271,8 @@ public class JCVideoPlayer extends FrameLayout implements View.OnClickListener, 
             cancelProgressTimer();
         }
     }
+
+
 
     public void onEventMainThread(VideoEvents videoEvents) {
         if (videoEvents.type == VideoEvents.VE_MEDIAPLAYER_FINISH_COMPLETE) {
@@ -539,7 +546,7 @@ public class JCVideoPlayer extends FrameLayout implements View.OnClickListener, 
         }
     }
 
-    private void updateStartImage() {
+    public void updateStartImage() {
         if (CURRENT_STATE == CURRENT_STATE_PLAYING) {
             ivStart.setImageResource(R.drawable.click_video_pause_selector);
         } else {
@@ -807,4 +814,5 @@ public class JCVideoPlayer extends FrameLayout implements View.OnClickListener, 
         this.enlargRecId = skin.enlargRecId;
         this.shrinkRecId = skin.shrinkRecId;
     }
+
 }
