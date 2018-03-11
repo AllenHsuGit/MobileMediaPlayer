@@ -29,9 +29,11 @@ dependencies {
     implementation files('libs/glide-3.7.0.jar')
     implementation files('libs/gson-2.2.1.jar')
     implementation files('libs/picasso-2.5.2.jar')
-    implementation project(':EventBus')
+    //implementation project(':EventBus')
     implementation project(':vitamio')
     implementation project(':xutils')
     implementation files('libs/Msc.jar')
     implementation files('libs/Sunflower.jar')
+    implementation project(':jcvideoplayer-lib')
+    implementation files('libs/classes.jar')
 }

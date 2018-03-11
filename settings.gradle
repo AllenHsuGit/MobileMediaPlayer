@@ -1,1 +1,1 @@
-include ':app', ':EventBus', ':mystartallplayer', ':vitamio', ':xListView', ':xutils'
+include ':app', ':EventBus', ':mystartallplayer', ':vitamio', ':xListView', ':xutils', ':jcvideoplayer-lib'

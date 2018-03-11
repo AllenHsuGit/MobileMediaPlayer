@@ -30,14 +30,15 @@ import com.project.perfy.mobilemediaplayer.utils.Utils;
 import com.project.perfy.mobilemediaplayer.view.LyricUtils;
 import com.project.perfy.mobilemediaplayer.view.ShowLyricView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.ThreadMode;
 
 
 /**
@@ -339,9 +340,19 @@ public class SystemAudioPlayer extends Activity implements View.OnClickListener 
         }
     }
     // 3.订阅方法（该方法不能设置为私有）
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = false,priority = 0)
+    //@Subscribe(threadMode = ThreadMode.MAIN,sticky = false,priority = 0)
     public void showData(MediaItem mediaItem) { // 传个String都可以，空的类也可以。
         // 发消息开始歌词同步
+        showLyric();
+        showViewData();
+        checkPlayMode();
+    }
+
+    /**
+     *EventBus低版本方法
+     * @param mediaItem
+     */
+    public void onEventMainThread(MediaItem mediaItem){
         showLyric();
         showViewData();
         checkPlayMode();
