@@ -5,7 +5,7 @@
     android:background="@android:color/black"
     android:gravity="center">
 
-    <com.project.perfy.mobilemediaplayer.controller.activity.VitamioVideoPlayer
+    <com.project.perfy.mobilemediaplayer.view.VitamioVideoView
         android:layout_centerInParent="true"
         android:id="@+id/videoview"
         android:layout_width="match_parent"
