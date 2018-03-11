@@ -131,9 +131,9 @@ public class NetAudioFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         if (hidden) {
             LogUtil.e("NetAudioFragment-onHiddenChanged==" + hidden);
-            JCMediaManager.intance().mediaPlayer.pause();
+            JCVideoPlayer.releaseAllVideos();
+            super.onHiddenChanged(hidden);
         }
-        super.onHiddenChanged(hidden);
     }
 
 }

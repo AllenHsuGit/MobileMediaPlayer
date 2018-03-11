@@ -90,10 +90,6 @@ public class JCVideoPlayer extends FrameLayout implements View.OnClickListener, 
     static boolean isFromFullScreenBackHere = false;//如果是true表示这个正在不是全屏，并且全屏刚推出，总之进入过全屏
     static boolean isClickFullscreen = false;
 
-    public JCVideoPlayer(@NonNull Context context) {
-        super(context);
-    }
-
     public JCVideoPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
         uuid = UUID.randomUUID().toString();
