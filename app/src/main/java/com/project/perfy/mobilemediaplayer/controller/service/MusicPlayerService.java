@@ -157,6 +157,11 @@ public class MusicPlayerService extends Service {
             service.seekTo(position);
         }
 
+        @Override
+        public int getAudioSessionId() throws RemoteException {
+            return mediaPlayer.getAudioSessionId();
+        }
+
     };
 
 

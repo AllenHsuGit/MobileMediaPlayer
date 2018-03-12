@@ -1,5 +1,6 @@
 package com.project.perfy.mobilemediaplayer.controller.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.audiofx.Visualizer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,7 +28,9 @@ import com.porfirio.mymobileplayer.IMusicPlayerService;
 import com.project.perfy.mobilemediaplayer.R;
 import com.project.perfy.mobilemediaplayer.controller.service.MusicPlayerService;
 import com.project.perfy.mobilemediaplayer.domain.MediaItem;
+import com.project.perfy.mobilemediaplayer.utils.PermissionChecker;
 import com.project.perfy.mobilemediaplayer.utils.Utils;
+import com.project.perfy.mobilemediaplayer.view.BaseVisualizerView;
 import com.project.perfy.mobilemediaplayer.view.LyricUtils;
 import com.project.perfy.mobilemediaplayer.view.ShowLyricView;
 
@@ -80,6 +84,8 @@ public class SystemAudioPlayer extends Activity implements View.OnClickListener 
     private Button btnAudioNext;
     private Button btnLyric;
     private ShowLyricView showLyricView;
+    private BaseVisualizerView baseVisualizerView;
+    private PermissionChecker mPermissionChecker;
     private int position;
     private List<MediaItem> mediaItems;
     private Uri uri;
@@ -115,6 +121,7 @@ public class SystemAudioPlayer extends Activity implements View.OnClickListener 
         btnAudioNext = (Button) findViewById(R.id.btn_audio_next);
         btnLyric = (Button) findViewById(R.id.btn_lyric);
         showLyricView = (ShowLyricView)findViewById(R.id.showLyricView);
+        baseVisualizerView = findViewById(R.id.baseVisualizerView);
 
         btnAudioPlaymode.setOnClickListener(this);
         btnAudioPre.setOnClickListener(this);
@@ -316,6 +323,12 @@ public class SystemAudioPlayer extends Activity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         initData();
         findViews();
+        //new一个PermissionChecker然后填入相应的权限和Callback
+        mPermissionChecker = new PermissionChecker();
+        mPermissionChecker.setActivity(this)
+                .setDefaultDialog(true)
+                .setPermissions(new String[]{Manifest.permission.RECORD_AUDIO})
+                .checkPermission();
         getData();
         bindAndStartService();
     }
@@ -346,6 +359,7 @@ public class SystemAudioPlayer extends Activity implements View.OnClickListener 
         showLyric();
         showViewData();
         checkPlayMode();
+        setupVisualizerFxAndUi();
     }
 
     /**
@@ -356,7 +370,33 @@ public class SystemAudioPlayer extends Activity implements View.OnClickListener 
         showLyric();
         showViewData();
         checkPlayMode();
+        setupVisualizerFxAndUi();
     }
+    private Visualizer mVisualizer;
+    /**
+     * 生成一个VisualizerView对象，使音频频谱的波段能够反映到 VisualizerView上
+     */
+    private void setupVisualizerFxAndUi()
+    {
+        try {
+            int audioSessionid = service.getAudioSessionId();
+            System.out.println("audioSessionid=="+audioSessionid);
+            if(mVisualizer != null){
+                mVisualizer = null;
+            }
+            mVisualizer = new Visualizer(audioSessionid);
+            mVisualizer.setEnabled(false);
+            // 参数内必须是2的位数
+            mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
+            // 设置允许波形表示，并且捕获它
+            baseVisualizerView.setVisualizer(mVisualizer);
+            mVisualizer.setEnabled(true);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void showLyric() {
         //解析歌词
         LyricUtils lyricUtils = new LyricUtils();
@@ -485,5 +525,13 @@ public class SystemAudioPlayer extends Activity implements View.OnClickListener 
             conn = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(isFinishing() && mVisualizer != null){
+            mVisualizer.release();
+        }
     }
 }
