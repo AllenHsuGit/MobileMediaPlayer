@@ -45,9 +45,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         fl_main_content = (FrameLayout) findViewById(R.id.fl_main_content);
         rg_bottom_tag = (RadioGroup) findViewById(R.id.rg_bottom_tag);
-        /**
-         * 初始化Fragment
-         */
+        //初始化Fragment
         initFragment();
         initListener();
 
@@ -96,28 +94,28 @@ public class MainActivity extends FragmentActivity {
     }
 
     private BaseFragment getFragment(int position) {
-        if(fragments != null && fragments.size() > 0) {
+        if (fragments != null && fragments.size() > 0) {
             BaseFragment baseFragment = fragments.get(position);
             return baseFragment;
         }
         return null;
     }
 
-    private void switchFragment(Fragment fromFragment, BaseFragment nextFragment){
-        if(tempFragment != nextFragment){
+    private void switchFragment(Fragment fromFragment, BaseFragment nextFragment) {
+        if (tempFragment != nextFragment) {
             tempFragment = nextFragment;
-            if(nextFragment != null){
+            if (nextFragment != null) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 // 判断nextFragment是否添加
-                if(!nextFragment.isAdded()){
+                if (!nextFragment.isAdded()) {
                     // 隐藏当前Fragment
-                    if(fromFragment != null){
+                    if (fromFragment != null) {
                         transaction.hide(fromFragment);
                     }
                     transaction.add(R.id.fl_main_content, nextFragment).commit();
                 } else {
                     // 隐藏当前Fragment
-                    if(fromFragment != null){
+                    if (fromFragment != null) {
                         transaction.hide(fromFragment);
                     }
                     transaction.show(nextFragment).commit();
@@ -130,6 +128,7 @@ public class MainActivity extends FragmentActivity {
      * 是否已经退出
      */
     private boolean isExit = false;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -137,7 +136,7 @@ public class MainActivity extends FragmentActivity {
                 position = 0;
                 rg_bottom_tag.check(R.id.rb_video);//回到首页
                 return true;
-            }else if(!isExit){
+            } else if (!isExit) {
                 isExit = true;
                 Toast.makeText(MainActivity.this, "再按一次推出应用！", Toast.LENGTH_SHORT).show();
                 new Handler().postDelayed(new Runnable() {

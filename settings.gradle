@@ -1,1 +1,1 @@
-include ':app', ':EventBus', ':mystartallplayer', ':vitamio', ':xListView', ':xutils', ':jcvideoplayer-lib', ':Android应用源码音乐实时跳动频谱显示Demo'
+include ':app', ':EventBus', ':mystartallplayer', ':vitamio', ':xListView', ':xutils', ':jcvideoplayer-lib', ':audio_fx'

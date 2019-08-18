@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.project.perfy.mobilemediaplayer"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -16,7 +16,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '26.0.2'
 }
 
 dependencies {
@@ -29,7 +28,7 @@ dependencies {
     implementation files('libs/glide-3.7.0.jar')
     implementation files('libs/gson-2.2.1.jar')
     implementation files('libs/picasso-2.5.2.jar')
-    //implementation project(':EventBus')
+   // implementation project(':EventBus')
     implementation project(':vitamio')
     implementation project(':xutils')
     implementation files('libs/Msc.jar')
